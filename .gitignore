@@ -1,0 +1,23 @@
+# ===== 依赖 =====
+node_modules/
+
+# ===== 构建产物 =====
+dist/
+out/
+release/
+
+# ===== 本地运行/测试数据 =====
+.smoke-data/
+.acl-data/
+*.log
+
+# ===== 编辑器与系统文件 =====
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# ===== 打包临时文件 =====
+*.part
+*.tmp

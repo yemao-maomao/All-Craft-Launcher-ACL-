@@ -1,0 +1,31 @@
+{
+  "name": "all-craft-launcher",
+  "productName": "All Craft Launcher",
+  "version": "0.0.1",
+  "description": "All Craft Launcher (ACL) —— 一款开源的 Minecraft 启动器，Windows 优先。界面风格灵感来自 PCL2 面板，全部代码与素材原创。",
+  "type": "commonjs",
+  "main": "src/main/main.js",
+  "author": "ACL Team",
+  "license": "GPL-3.0-only",
+  "homepage": "https://github.com/AllCraftLauncher/AllCraftLauncher",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AllCraftLauncher/AllCraftLauncher.git"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "electron .",
+    "smoke": "node scripts/smoke.js",
+    "boot-test": "electron scripts/boot-app",
+    "icon": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/make-icon.ps1",
+    "dist": "electron-builder --win",
+    "dist:portable": "electron-builder --win portable",
+    "dist:nsis": "electron-builder --win nsis"
+  },
+  "devDependencies": {
+    "electron": "45.0.0",
+    "electron-builder": "26.18.0"
+  }
+}

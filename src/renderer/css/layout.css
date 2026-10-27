@@ -1,0 +1,362 @@
+/**
+ * @fileoverview 布局样式：应用外壳、自绘标题栏、一级导航、双栏骨架、浮动按钮组
+ *
+ * 结构（对应 index.html）：
+ *   .acl-app（纵向 flex，占满视口）
+ *   ├── .acl-titlebar 44px（-webkit-app-region: drag 拖动区）
+ *   ├── .acl-main（flex:1，页面容器，页面内部自带左栏/子导航）
+ *   ├── .acl-task-panel（右下任务面板弹层）
+ *   ├── .acl-fabs（右下浮动按钮组）
+ *   └── 模态框层 / toast 层（components.css）
+ */
+
+/* ===================== 应用外壳 ===================== */
+.acl-app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* ===================== 标题栏（44px，自绘） ===================== */
+.acl-titlebar {
+  position: relative;
+  flex: none;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 0 0 0 14px;
+  background: var(--titlebar-bg);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  -webkit-app-region: drag; /* 整条可拖动窗口 */
+  z-index: 50;
+}
+
+/* 左侧品牌区（Logo + 名称），禁止拖动 */
+.acl-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent);
+  -webkit-app-region: no-drag;
+  user-select: none;
+}
+
+.acl-brand__name {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.2px;
+}
+
+/* 中部一级导航（绝对居中） */
+.acl-nav {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  gap: 4px;
+  -webkit-app-region: no-drag;
+}
+
+.acl-nav-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 15px;
+  border-radius: var(--r-pill);
+  color: var(--text-2);
+  font-size: 13px;
+  transition: background-color var(--t-fast), color var(--t-fast), box-shadow var(--t-fast);
+  white-space: nowrap;
+}
+
+.acl-nav-item:hover {
+  color: var(--text);
+  background: color-mix(in srgb, var(--accent-5) 10%, transparent);
+}
+
+/* 激活态：主题色胶囊底 + 白字 + 微光晕 */
+.acl-nav-item.is-active {
+  color: #fff;
+  background: var(--accent-5);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--accent-5) 45%, transparent);
+}
+
+.acl-nav-item.is-active:hover {
+  background: var(--accent-hover);
+}
+
+/* 右侧窗口控制按钮 */
+.acl-win-btns {
+  margin-left: auto;
+  display: flex;
+  height: 100%;
+  -webkit-app-region: no-drag;
+}
+
+.acl-win-btn {
+  width: 46px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-2);
+  transition: background-color var(--t-fast), color var(--t-fast);
+}
+
+.acl-win-btn:hover {
+  background: color-mix(in srgb, var(--text) 8%, transparent);
+  color: var(--text);
+}
+
+/* 关闭按钮悬浮变红（Windows 惯例） */
+.acl-win-btn--close:hover {
+  background: var(--danger);
+  color: #fff;
+}
+
+/* ===================== 主内容区 ===================== */
+.acl-main {
+  flex: 1;
+  display: flex;
+  min-height: 0; /* 允许子元素按剩余高度滚动 */
+}
+
+/* 页面根：左侧面板/子导航 + 右侧滚动区 */
+.acl-page {
+  flex: 1;
+  display: flex;
+  min-width: 0;
+  /* 页面切换动画：淡入 + 上移 4px */
+  animation: aclPageIn var(--t-fast) ease;
+}
+
+@keyframes aclPageIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 启动页左操作面板（280px 固定） */
+.acl-panel {
+  flex: none;
+  width: 280px;
+  overflow-y: auto;
+  padding: 16px 14px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 下载页 / 设置页左子导航（220px） */
+.acl-subnav {
+  flex: none;
+  width: 220px;
+  overflow-y: auto;
+  padding: 14px 10px;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  background: color-mix(in srgb, var(--card) 55%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.acl-subitem {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: var(--r-ctl);
+  color: var(--text-2);
+  font-size: 13px;
+  transition: background-color var(--t-fast), color var(--t-fast);
+  text-align: left;
+}
+
+.acl-subitem:hover {
+  color: var(--text);
+  background: color-mix(in srgb, var(--text) 5%, transparent);
+}
+
+.acl-subitem.is-active {
+  color: var(--accent-deep);
+  background: var(--accent-soft);
+  font-weight: 600;
+}
+
+/* 灰态占位子项（即将支持） */
+.acl-subitem.is-disabled {
+  color: var(--text-3);
+  cursor: not-allowed;
+}
+
+.acl-subitem__tag {
+  margin-left: auto;
+}
+
+.acl-subnav__group {
+  margin: 10px 12px 4px;
+  font-size: 11px;
+  color: var(--text-3);
+  letter-spacing: 1px;
+}
+
+/* 右侧滚动内容区 */
+.acl-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 20px 84px; /* 底部留出浮动按钮空间 */
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+/* ===================== 右下浮动按钮组 ===================== */
+.acl-fabs {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 90;
+}
+
+.acl-fab {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--card);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  color: var(--accent);
+  transition: transform var(--t-fast), box-shadow var(--t-fast), background-color var(--t-fast);
+}
+
+.acl-fab:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+  background: var(--accent-soft);
+}
+
+.acl-fab:active {
+  transform: translateY(0) scale(0.96);
+}
+
+/* 进行中任务数徽章 */
+.acl-fab__badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: var(--r-pill);
+  background: var(--danger);
+  color: #fff;
+  font-size: 11px;
+  line-height: 17px;
+  text-align: center;
+  font-weight: 600;
+  animation: aclBadgeIn var(--t-fast) ease;
+}
+
+@keyframes aclBadgeIn {
+  from { transform: scale(0.4); }
+  to { transform: scale(1); }
+}
+
+/* 返回顶部按钮：默认隐藏，滚动后出现 */
+.acl-fab--top {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+}
+
+.acl-fab--top.is-show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* ===================== 右下任务面板弹层 ===================== */
+.acl-task-panel {
+  position: fixed;
+  right: 18px;
+  bottom: 72px;
+  width: 320px;
+  max-height: 62vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: var(--r-card);
+  box-shadow: var(--shadow-hover);
+  z-index: 91;
+  /* 弹出动画：淡入 + 上移 */
+  animation: aclPanelIn var(--t-fast) ease;
+}
+
+@keyframes aclPanelIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.acl-task-panel__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+  font-weight: 600;
+}
+
+.acl-task-panel__head .acl-ico {
+  color: var(--accent);
+}
+
+.acl-task-panel__list {
+  overflow-y: auto;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.acl-task-panel__empty {
+  padding: 22px 12px;
+  text-align: center;
+  color: var(--text-3);
+}
+
+.acl-task-panel__foot {
+  padding: 10px 14px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+.acl-task-panel__foot .acl-progress {
+  flex: 1;
+}

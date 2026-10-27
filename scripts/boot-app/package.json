@@ -1,0 +1,7 @@
+{
+  "name": "acl-boot-test",
+  "version": "0.0.1",
+  "private": true,
+  "main": "../boot-test.js",
+  "description": "集成启动冒烟测试的最小 app 壳（仅供开发用）：以 electron scripts/boot-app 运行"
+}

@@ -1,0 +1,410 @@
+/**
+ * @fileoverview 启动页样式（docs/UI-SPEC.md §5.1）
+ *
+ * 左栏（280px）：账号卡片 / 实例与版本选择 / 内存折叠块 / 分辨率 / 大启动按钮；
+ * 启动后左栏原位切换为进程态（旋转加载 + 不定长进度 + 信息表 + 取消）。
+ * 右栏卡片流：欢迎提示条 / 主页卡片 / 小贴士 / 启动日志卡片 / 任务卡片。
+ */
+
+/* ===================== 左栏：账号卡片 ===================== */
+.acl-acc {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.acl-acc__mid {
+  flex: 1;
+  min-width: 0;
+}
+
+.acl-acc__name {
+  font-weight: 600;
+  font-size: 14.5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.acl-acc__meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 3px;
+}
+
+.acl-acc__login {
+  margin-left: auto;
+  flex: none;
+}
+
+/* 未登录态：登录主按钮 + 两个次级入口 */
+.acl-acc--empty {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+}
+
+.acl-acc--empty .acl-acc__top {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.acl-acc__entries {
+  display: flex;
+  gap: 8px;
+}
+
+.acl-acc__entries .acl-btn {
+  flex: 1;
+}
+
+/* ===================== 左栏：选择行（实例/版本/分辨率） ===================== */
+.acl-home-row {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.acl-home-row__label {
+  font-size: 12px;
+  color: var(--text-2);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.acl-home-row__label .acl-ico {
+  color: var(--accent);
+}
+
+.acl-home-row__line {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.acl-home-row__line .acl-select-wrap {
+  flex: 1;
+  min-width: 0;
+}
+
+/* 校验失败高亮（未登录/未选版本） */
+.acl-home-row.is-invalid .acl-select,
+.acl-acc.is-invalid {
+  border-color: var(--warning);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--warning) 22%, transparent);
+  animation: aclShake 300ms ease;
+}
+
+@keyframes aclShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+/* ===================== 内存折叠块 ===================== */
+.acl-mem-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.acl-mem-slider-row {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.acl-mem-slider-row__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+.acl-mem-slider-row__val {
+  font-weight: 600;
+  color: var(--accent-deep);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ===================== 大启动按钮 ===================== */
+.acl-launch {
+  width: 100%;
+  height: 56px;
+  border-radius: var(--r-btn-lg);
+  /* 主题色渐变（--accent-5 → --accent-4） */
+  background: linear-gradient(135deg, var(--accent-5), var(--accent-4));
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--accent-5) 40%, transparent);
+  transition: transform var(--t-fast), box-shadow var(--t-fast), filter var(--t-fast);
+}
+
+.acl-launch:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px color-mix(in srgb, var(--accent-5) 52%, transparent);
+  filter: brightness(1.04);
+}
+
+.acl-launch:active:not(:disabled) {
+  transform: translateY(0) scale(0.985);
+}
+
+.acl-launch:disabled {
+  background: color-mix(in srgb, var(--text-3) 45%, transparent);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* 启动按钮下的小字（登录身份提示） */
+.acl-launch-hint {
+  text-align: center;
+  font-size: 11.5px;
+  color: var(--text-3);
+  margin-top: 6px;
+}
+
+/* ===================== 启动进程态（左栏原位替换） ===================== */
+.acl-proc {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 2px;
+  /* 淡入动画 */
+  animation: aclPageIn var(--t-fast) ease;
+}
+
+.acl-proc__spinner {
+  width: 46px;
+  height: 46px;
+  border: 4px solid var(--accent-soft);
+  border-top-color: var(--accent-5);
+  border-radius: 50%;
+  animation: aclSpin var(--spin);
+  position: relative;
+}
+
+/* 运行中改为绿色实心点（脉冲） */
+.acl-proc__dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--success);
+  animation: aclPulse 1.6s ease-in-out infinite;
+}
+
+@keyframes aclPulse {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--success) 45%, transparent); }
+  50% { box-shadow: 0 0 0 9px transparent; }
+}
+
+.acl-proc__title {
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.acl-proc__dot-inline {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--success);
+  animation: aclPulse 1.6s ease-in-out infinite;
+}
+
+.acl-proc__version {
+  font-size: 12.5px;
+  color: var(--text-2);
+}
+
+.acl-proc .acl-progress {
+  width: 100%;
+}
+
+/* 进程信息表 */
+.acl-proc-table {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--r-ctl);
+  overflow: hidden;
+}
+
+.acl-proc-table__row {
+  display: flex;
+  padding: 7px 10px;
+  font-size: 12.5px;
+}
+
+.acl-proc-table__row + .acl-proc-table__row {
+  border-top: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+}
+
+.acl-proc-table__k {
+  flex: none;
+  width: 62px;
+  color: var(--text-3);
+}
+
+.acl-proc-table__v {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: right;
+  font-weight: 500;
+}
+
+/* ===================== 右栏：主页卡片 ===================== */
+.acl-home-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 26px 20px 22px;
+  text-align: center;
+}
+
+.acl-home-hero__logo {
+  color: var(--accent);
+  opacity: 0.92;
+}
+
+.acl-home-hero__title {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.acl-home-hero__desc {
+  font-size: 12.5px;
+  color: var(--text-2);
+  max-width: 420px;
+  line-height: 1.7;
+}
+
+.acl-home-hero__actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 4px;
+}
+
+/* 小贴士卡 */
+.acl-tip {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.acl-tip__icon {
+  flex: none;
+  color: var(--warning);
+  margin-top: 1px;
+}
+
+.acl-tip__text {
+  color: var(--text-2);
+  line-height: 1.7;
+}
+
+/* ===================== 启动日志卡片 ===================== */
+.acl-log {
+  display: flex;
+  flex-direction: column;
+  height: 430px;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* 卡片头（含运行状态） */
+.acl-log__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 14px 9px;
+  border-bottom: 1px solid var(--border);
+}
+
+.acl-log__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.acl-log__title .acl-ico {
+  color: var(--accent);
+}
+
+/* 运行中绿点 + 标签 */
+.acl-log__running {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--success);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.acl-log__running-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--success);
+  animation: aclPulse 1.6s ease-in-out infinite;
+}
+
+/* 工具行 */
+.acl-log__tools {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 14px;
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+.acl-log__tool-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.acl-log__tool-btns {
+  margin-left: auto;
+  display: flex;
+  gap: 4px;
+}
+
+/* 日志区 */
+.acl-log__box {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 14px;
+  background: var(--code-bg);
+}
+
+/* ===================== 首页任务卡片 ===================== */
+.acl-home-tasks {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

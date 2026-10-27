@@ -1,0 +1,375 @@
+/**
+ * @fileoverview 下载页样式（docs/UI-SPEC.md §5.2）
+ *
+ * 左侧子导航（220px）+ 右侧内容；三个标签页：
+ *  1. 原版游戏：工具条（搜索/过滤 chips/下载源/刷新）+ 版本卡片流（分页 50/页）；
+ *  2. 模组加载器：Fabric 卡片 + 其余加载器灰态占位；
+ *  3. Java 运行时：按 [8,17,21,25] 渲染四张检测/下载卡片。
+ */
+
+/* ===================== 工具条 ===================== */
+.acl-dl-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.acl-dl-toolbar__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.acl-dl-search {
+  flex: 1;
+  min-width: 180px;
+}
+
+.acl-dl-source {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-2);
+  flex: none;
+}
+
+.acl-dl-source .acl-select-wrap {
+  width: 132px;
+}
+
+/* ===================== 版本行 ===================== */
+.acl-ver-row {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 11px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-ctl);
+  background: color-mix(in srgb, var(--card) 72%, transparent);
+  transition: transform var(--t-fast), box-shadow var(--t-fast), border-color var(--t-fast);
+}
+
+.acl-ver-row:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+  border-color: color-mix(in srgb, var(--accent-5) 35%, transparent);
+}
+
+/* 版本方块图标（按类型着色 + 已安装绿色勾角标） */
+.acl-ver-icon {
+  position: relative;
+  flex: none;
+  width: 38px;
+  height: 38px;
+}
+
+.acl-ver-icon__svg {
+  width: 100%;
+  height: 100%;
+}
+
+.acl-ver-icon--release { color: var(--success); }
+.acl-ver-icon--snapshot { color: var(--accent-5); }
+.acl-ver-icon--old { color: var(--ver-old); }
+
+/* 已安装角标 */
+.acl-ver-icon__badge {
+  position: absolute;
+  right: -5px;
+  bottom: -5px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--success);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.acl-ver-mid {
+  flex: 1;
+  min-width: 0;
+}
+
+.acl-ver-id {
+  font-weight: 600;
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.acl-ver-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 3px;
+  font-size: 11.5px;
+  color: var(--text-3);
+}
+
+.acl-ver-actions {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 150px;
+  justify-content: flex-end;
+}
+
+/* 安装中进度区 */
+.acl-ver-progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 170px;
+}
+
+.acl-ver-progress .acl-progress {
+  flex: 1;
+}
+
+.acl-ver-progress__pct {
+  font-size: 12px;
+  color: var(--text-2);
+  font-variant-numeric: tabular-nums;
+  flex: none;
+  width: 34px;
+  text-align: right;
+}
+
+/* 列表底部状态行 */
+.acl-dl-footer {
+  text-align: center;
+  padding: 10px;
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+/* 骨架屏行（与版本行同构） */
+.acl-ver-skeleton {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 13px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-ctl);
+}
+
+.acl-ver-skeleton__icon {
+  flex: none;
+  width: 38px;
+  height: 38px;
+}
+
+.acl-ver-skeleton__mid {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.acl-ver-skeleton__line1 {
+  width: 140px;
+  height: 14px;
+}
+
+.acl-ver-skeleton__line2 {
+  width: 210px;
+  height: 10px;
+}
+
+.acl-ver-skeleton__btn {
+  flex: none;
+  width: 62px;
+  height: 26px;
+}
+
+/* ===================== 模组加载器标签 ===================== */
+.acl-loader-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 12px;
+}
+
+.acl-loader-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.acl-loader-card.is-disabled {
+  opacity: 0.55;
+}
+
+.acl-loader-card__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.acl-loader-card__icon {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: var(--accent-soft);
+  color: var(--accent-5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.acl-loader-card__title {
+  font-weight: 600;
+  font-size: 14.5px;
+}
+
+.acl-loader-card__desc {
+  font-size: 12px;
+  color: var(--text-2);
+  line-height: 1.6;
+}
+
+.acl-loader-card__row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.acl-loader-card__row-label {
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+.acl-loader-card__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Fabric 安装进度区 */
+.acl-fab-progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.acl-fab-progress .acl-progress {
+  flex: 1;
+}
+
+/* ===================== Java 运行时标签 ===================== */
+.acl-java-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 12px;
+}
+
+.acl-java-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.acl-java-card__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.acl-java-card__icon {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  background: var(--accent-soft);
+  color: var(--accent-5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.acl-java-card__title {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.acl-java-card__desc {
+  font-size: 12px;
+  color: var(--text-3);
+  margin-top: 2px;
+}
+
+/* 检测结果列表 */
+.acl-java-status {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.acl-java-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  padding: 5px 9px;
+  border-radius: 6px;
+  background: var(--bg-soft);
+  min-width: 0;
+}
+
+.acl-java-item__ver {
+  font-weight: 600;
+  color: var(--accent-deep);
+  flex: none;
+}
+
+.acl-java-item__path {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-2);
+}
+
+.acl-java-item__arch {
+  flex: none;
+  font-size: 11px;
+  color: var(--text-3);
+}
+
+.acl-java-none {
+  font-size: 12.5px;
+  color: var(--warning);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 2px;
+}
+
+/* 下载进度 */
+.acl-java-progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.acl-java-progress .acl-progress {
+  flex: 1;
+}
+
+.acl-java-progress__pct {
+  font-size: 12px;
+  color: var(--text-2);
+  font-variant-numeric: tabular-nums;
+  flex: none;
+  width: 34px;
+  text-align: right;
+}

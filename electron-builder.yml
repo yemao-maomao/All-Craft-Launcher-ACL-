@@ -1,0 +1,63 @@
+# ============================================================
+# electron-builder 打包配置
+# 负责把 Electron 应用打包为 Windows 可执行文件：
+#   - portable：免安装单文件 EXE（绿色版，推荐分发）
+#   - nsis：NSIS 安装向导 EXE
+# 产物输出到 dist/ 目录。
+# ============================================================
+
+# 应用唯一标识（Windows 注册表/任务栏分组使用）
+appId: com.acl.allcraftlauncher
+
+# 显示名称（安装目录、快捷方式、窗口标题默认值）
+productName: All Craft Launcher
+
+# 版权行
+copyright: Copyright © 2026 ACL Team
+
+directories:
+  # 打包产物输出目录
+  output: dist
+  # 构建资源目录（图标等）
+  buildResources: build
+
+# 只打包运行所需的文件，减小体积
+files:
+  - src/**/*
+  - package.json
+  - "!docs/**"
+  - "!scripts/**"
+  - "!build/**"
+
+# 把源码压进 asar 归档（加快加载、防篡改）
+asar: true
+
+# 压缩级别：normal 在体积与速度间平衡
+compression: normal
+
+# 我们没有任何原生 npm 依赖，跳过重建
+npmRebuild: false
+
+# Windows 平台打包配置
+win:
+  # 应用图标（由 scripts/make-icon.ps1 生成，需先执行 npm run icon）
+  icon: build/icon.ico
+  target:
+    - target: portable   # 免安装单文件版
+      arch: [x64]
+    - target: nsis       # 安装向导版
+      arch: [x64]
+
+# 免安装版产物命名：AllCraftLauncher-0.0.1-portable.exe
+portable:
+  artifactName: AllCraftLauncher-${version}-portable.exe
+
+# 安装向导版配置
+nsis:
+  # 允许用户选择安装目录（oneClick=false 展示安装界面）
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  shortcutName: All Craft Launcher
+  artifactName: AllCraftLauncher-${version}-setup.exe

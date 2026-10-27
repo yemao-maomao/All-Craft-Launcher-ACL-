@@ -1,0 +1,1352 @@
+/**
+ * @fileoverview 通用组件样式（docs/UI-SPEC.md §6 全量组件，class 前缀 acl-）
+ *
+ * 包含：按钮 / 卡片 / 输入框 / 下拉 / 开关 / 滑块 / 筛选 chips / 徽章 tag /
+ *       进度条 / 模态框 / toast / 空态 / 加载圈 / 骨架屏 / 提示条 / 头像 /
+ *       tooltip / 分段按钮 / 表单行 / 日志行 / 任务迷你行 / 实例行 / 登录弹窗。
+ */
+
+/* ===================== 按钮 acl-btn ===================== */
+.acl-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 14px;
+  border-radius: var(--r-ctl);
+  border: 1px solid transparent;
+  font-size: 13px;
+  transition: background-color var(--t-fast), border-color var(--t-fast), color var(--t-fast),
+    transform var(--t-fast), box-shadow var(--t-fast), opacity var(--t-fast);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.acl-btn:active:not(:disabled) {
+  transform: translateY(0) scale(0.97);
+}
+
+.acl-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 主按钮：主题色 */
+.acl-btn--primary {
+  background: var(--accent-5);
+  color: #fff;
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--accent-5) 35%, transparent);
+}
+
+.acl-btn--primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--accent-5) 45%, transparent);
+}
+
+/* 幽灵按钮：描边 */
+.acl-btn--ghost {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--text);
+}
+
+.acl-btn--ghost:hover:not(:disabled) {
+  border-color: var(--accent-5);
+  color: var(--accent-5);
+  transform: translateY(-1px);
+}
+
+/* 危险按钮 */
+.acl-btn--danger {
+  background: var(--danger);
+  color: #fff;
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--danger) 35%, transparent);
+}
+
+.acl-btn--danger:hover:not(:disabled) {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+/* 文字按钮 */
+.acl-btn--text {
+  background: transparent;
+  color: var(--text-2);
+  padding: 0 8px;
+}
+
+.acl-btn--text:hover:not(:disabled) {
+  color: var(--accent-5);
+  background: var(--accent-soft);
+}
+
+/* 尺寸 */
+.acl-btn--small {
+  height: 26px;
+  padding: 0 10px;
+  font-size: 12px;
+  border-radius: 6px;
+}
+
+.acl-btn--large {
+  height: 40px;
+  padding: 0 22px;
+  font-size: 14px;
+}
+
+/* 忙碌态：内嵌旋转圈 */
+.acl-btn.is-loading {
+  position: relative;
+  color: transparent !important;
+  pointer-events: none;
+}
+
+.acl-btn.is-loading::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 13px;
+  height: 13px;
+  margin: -7.5px 0 0 -7.5px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: aclSpin var(--spin);
+}
+
+.acl-btn--ghost.is-loading::after {
+  border-color: color-mix(in srgb, var(--text) 25%, transparent);
+  border-top-color: var(--text);
+}
+
+/* 图标小按钮 */
+.acl-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  color: var(--text-2);
+  transition: background-color var(--t-fast), color var(--t-fast), opacity var(--t-fast);
+}
+
+.acl-icon-btn:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--text) 8%, transparent);
+  color: var(--text);
+}
+
+.acl-icon-btn--danger:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+  color: var(--danger);
+}
+
+.acl-icon-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ===================== 卡片 acl-card ===================== */
+.acl-card {
+  background: var(--card);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  border-radius: var(--r-card);
+  box-shadow: var(--shadow);
+  padding: 14px 16px;
+  transition: box-shadow var(--t-fast), transform var(--t-fast);
+}
+
+/* 可折叠卡片 */
+.acl-card__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 14.5px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.acl-card__head .acl-ico {
+  color: var(--accent);
+}
+
+.acl-card__chevron {
+  margin-left: auto;
+  color: var(--text-3);
+  transition: transform var(--t-fast);
+}
+
+.acl-card--collapsed .acl-card__chevron {
+  transform: rotate(-90deg);
+}
+
+.acl-card__body {
+  margin-top: 12px;
+}
+
+.acl-card--collapsed .acl-card__body {
+  display: none;
+}
+
+/* 卡片工具行（标题 + 右侧按钮组） */
+.acl-card__bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.acl-card__bar-title {
+  font-weight: 600;
+  font-size: 14.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.acl-card__bar-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ===================== 输入框 / 下拉 ===================== */
+.acl-input {
+  width: 100%;
+  height: 30px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-ctl);
+  background: var(--bg-soft);
+  color: var(--text);
+  transition: border-color var(--t-fast), box-shadow var(--t-fast);
+}
+
+.acl-input::placeholder {
+  color: var(--text-3);
+}
+
+.acl-input:focus {
+  outline: none;
+  border-color: var(--accent-5);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-5) 18%, transparent);
+}
+
+textarea.acl-input {
+  height: auto;
+  padding: 8px 10px;
+  resize: vertical;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 12px;
+}
+
+/* 下拉（原生 select 定制外观 + 手绘 chevron） */
+.acl-select-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.acl-select {
+  width: 100%;
+  height: 30px;
+  padding: 0 26px 0 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-ctl);
+  background: var(--bg-soft);
+  color: var(--text);
+  appearance: none;
+  cursor: pointer;
+  transition: border-color var(--t-fast), box-shadow var(--t-fast);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.acl-select:focus {
+  outline: none;
+  border-color: var(--accent-5);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-5) 18%, transparent);
+}
+
+.acl-select:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.acl-select-arrow {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-3);
+  pointer-events: none;
+}
+
+/* 带图标的搜索框 */
+.acl-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.acl-search .acl-ico {
+  position: absolute;
+  left: 10px;
+  color: var(--text-3);
+  pointer-events: none;
+}
+
+.acl-search .acl-input {
+  padding-left: 30px;
+}
+
+/* ===================== 开关 acl-switch ===================== */
+.acl-switch {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 20px;
+  cursor: pointer;
+  flex: none;
+}
+
+.acl-switch__input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.acl-switch__track {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--text-3) 40%, transparent);
+  transition: background-color var(--t-fast);
+}
+
+.acl-switch__thumb {
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  transition: transform var(--t-fast);
+}
+
+.acl-switch__input:checked + .acl-switch__track {
+  background: var(--accent-5);
+}
+
+.acl-switch__input:checked + .acl-switch__track .acl-switch__thumb {
+  transform: translateX(16px);
+}
+
+.acl-switch.is-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ===================== 滑块 acl-slider ===================== */
+.acl-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: var(--r-pill);
+  background: linear-gradient(to right, var(--accent-5), var(--accent-4));
+  outline: none;
+}
+
+.acl-slider:disabled {
+  opacity: 0.45;
+}
+
+/* 滑块把手（WebKit） */
+.acl-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid var(--accent-5);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  transition: transform var(--t-fast);
+}
+
+.acl-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.12);
+}
+
+/* ===================== 筛选 chips acl-chip ===================== */
+.acl-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.acl-chip {
+  height: 26px;
+  padding: 0 12px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-2);
+  font-size: 12px;
+  transition: all var(--t-fast);
+}
+
+.acl-chip:hover {
+  border-color: var(--accent-5);
+  color: var(--accent-5);
+}
+
+.acl-chip.is-active {
+  background: var(--accent-5);
+  border-color: var(--accent-5);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ===================== 徽章 acl-tag ===================== */
+.acl-tag {
+  display: inline-flex;
+  align-items: center;
+  height: 18px;
+  padding: 0 8px;
+  border-radius: var(--r-pill);
+  font-size: 11px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.acl-tag--accent {
+  background: var(--accent-soft);
+  color: var(--accent-deep);
+}
+
+.acl-tag--success {
+  background: color-mix(in srgb, var(--success) 15%, transparent);
+  color: var(--success);
+}
+
+.acl-tag--danger {
+  background: color-mix(in srgb, var(--danger) 14%, transparent);
+  color: var(--danger);
+}
+
+.acl-tag--warning {
+  background: color-mix(in srgb, var(--warning) 16%, transparent);
+  color: var(--warning);
+}
+
+.acl-tag--gray {
+  background: color-mix(in srgb, var(--text-3) 16%, transparent);
+  color: var(--text-2);
+}
+
+/* ===================== 进度条 acl-progress ===================== */
+.acl-progress {
+  position: relative;
+  height: 8px;
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--text-3) 22%, transparent);
+  overflow: hidden;
+}
+
+.acl-progress--lg {
+  height: 12px;
+}
+
+.acl-progress__bar {
+  height: 100%;
+  border-radius: var(--r-pill);
+  /* 主题色渐变进度条 */
+  background: linear-gradient(90deg, var(--accent-5), var(--accent-4));
+  transition: width 250ms ease;
+}
+
+/* 不定长进度（启动进程态） */
+.acl-progress--indeterminate .acl-progress__bar {
+  width: 40%;
+  position: absolute;
+  animation: aclIndeterminate 1.3s ease-in-out infinite;
+}
+
+@keyframes aclIndeterminate {
+  0% { left: -40%; }
+  100% { left: 100%; }
+}
+
+/* ===================== 模态框 acl-modal ===================== */
+.acl-modal-mask {
+  position: fixed;
+  inset: 0;
+  background: var(--mask);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  animation: aclFadeIn var(--t-fast) ease;
+}
+
+@keyframes aclFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.acl-modal {
+  width: var(--w, 420px);
+  max-width: calc(100vw - 48px);
+  max-height: calc(100vh - 96px);
+  display: flex;
+  flex-direction: column;
+  background: var(--card-solid);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.28);
+  /* 淡入缩放 */
+  animation: aclModalIn 180ms ease;
+}
+
+@keyframes aclModalIn {
+  from { opacity: 0; transform: scale(0.96) translateY(6px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.acl-modal__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 16px 11px;
+  border-bottom: 1px solid var(--border);
+}
+
+.acl-modal__title {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.acl-modal__body {
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.acl-modal__foot {
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+}
+
+.acl-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* 确认对话框 */
+.acl-confirm__msg {
+  color: var(--text-2);
+  line-height: 1.7;
+  word-break: break-all;
+}
+
+/* 表单列（弹窗内输入） */
+.acl-form-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.acl-form-label {
+  font-size: 12.5px;
+  color: var(--text-2);
+}
+
+.acl-field-hint {
+  font-size: 12px;
+  color: var(--text-3);
+  line-height: 1.6;
+}
+
+.acl-field-error {
+  font-size: 12px;
+  color: var(--danger);
+}
+
+/* ===================== toast 通知 ===================== */
+.acl-toast-layer {
+  position: fixed;
+  top: 54px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 200;
+}
+
+.acl-toast {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  min-width: 220px;
+  max-width: 380px;
+  padding: 10px 14px 10px 12px;
+  background: var(--card-solid);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent-5);
+  border-radius: var(--r-ctl);
+  box-shadow: var(--shadow-hover);
+  animation: aclToastIn 200ms ease;
+}
+
+.acl-toast--success { border-left-color: var(--success); }
+.acl-toast--error { border-left-color: var(--danger); }
+.acl-toast--warning { border-left-color: var(--warning); }
+
+.acl-toast__icon {
+  flex: none;
+  margin-top: 1px;
+}
+
+.acl-toast--success .acl-toast__icon { color: var(--success); }
+.acl-toast--error .acl-toast__icon { color: var(--danger); }
+.acl-toast--warning .acl-toast__icon { color: var(--warning); }
+.acl-toast--info .acl-toast__icon { color: var(--accent-5); }
+
+.acl-toast__text {
+  flex: 1;
+  line-height: 1.55;
+  word-break: break-all;
+}
+
+/* 退场动画 */
+.acl-toast--out {
+  animation: aclToastOut 240ms ease forwards;
+}
+
+@keyframes aclToastIn {
+  from { opacity: 0; transform: translateX(24px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes aclToastOut {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(24px); }
+}
+
+/* ===================== 空态 acl-empty ===================== */
+.acl-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 46px 20px;
+  text-align: center;
+}
+
+.acl-empty__icon {
+  color: var(--text-3);
+  opacity: 0.85;
+}
+
+.acl-empty__title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+
+.acl-empty__divider {
+  width: 46px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--border);
+}
+
+.acl-empty__desc {
+  font-size: 12.5px;
+  color: var(--text-3);
+  max-width: 320px;
+  line-height: 1.7;
+}
+
+/* ===================== 加载圈 acl-spinner ===================== */
+.acl-spinner {
+  display: inline-block;
+  border: 3px solid color-mix(in srgb, var(--accent-5) 22%, transparent);
+  border-top-color: var(--accent-5);
+  border-radius: 50%;
+  animation: aclSpin var(--spin);
+  flex: none;
+}
+
+@keyframes aclSpin {
+  to { transform: rotate(360deg); }
+}
+
+.acl-loading-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 26px;
+  color: var(--text-2);
+}
+
+/* ===================== 骨架屏 acl-skeleton ===================== */
+.acl-skeleton {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--r-ctl);
+  background: color-mix(in srgb, var(--text) 8%, transparent);
+}
+
+/* 扫光动画 */
+.acl-skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--text) 7%, transparent), transparent);
+  transform: translateX(-100%);
+  animation: aclShimmer 1.4s infinite;
+}
+
+@keyframes aclShimmer {
+  to { transform: translateX(100%); }
+}
+
+/* ===================== tooltip（纯 CSS，data-tip） ===================== */
+.acl-tooltip {
+  position: relative;
+}
+
+.acl-tooltip::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 7px);
+  left: 50%;
+  transform: translateX(-50%) translateY(3px);
+  padding: 5px 10px;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--text) 92%, transparent);
+  color: var(--bg);
+  font-size: 12px;
+  line-height: 1.4;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--t-fast), transform var(--t-fast);
+  z-index: 300;
+}
+
+.acl-tooltip:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ===================== 头像 acl-avatar ===================== */
+.acl-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-5), var(--accent-4));
+  color: #fff;
+  font-size: 19px;
+  font-weight: 600;
+  flex: none;
+  text-transform: uppercase;
+}
+
+.acl-avatar--small {
+  width: 34px;
+  height: 34px;
+  font-size: 15px;
+}
+
+/* ===================== 提示条 acl-hint（三色，可关闭） ===================== */
+.acl-hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: var(--r-ctl);
+  font-size: 12.5px;
+  line-height: 1.6;
+  border: 1px solid;
+}
+
+.acl-hint .acl-ico {
+  flex: none;
+  margin-top: 2px;
+}
+
+.acl-hint__close {
+  margin-left: auto;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  color: inherit;
+  opacity: 0.65;
+}
+
+.acl-hint__close:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.acl-hint--info {
+  background: var(--accent-soft);
+  border-color: color-mix(in srgb, var(--accent-5) 28%, transparent);
+  color: var(--accent-deep);
+}
+
+.acl-hint--warning {
+  background: color-mix(in srgb, var(--warning) 13%, transparent);
+  border-color: color-mix(in srgb, var(--warning) 35%, transparent);
+  color: var(--warning);
+}
+
+.acl-hint--danger {
+  background: color-mix(in srgb, var(--danger) 11%, transparent);
+  border-color: color-mix(in srgb, var(--danger) 32%, transparent);
+  color: var(--danger);
+}
+
+/* ===================== 分段按钮 acl-seg ===================== */
+.acl-seg {
+  display: flex;
+  gap: 6px;
+  padding: 5px;
+  border-radius: var(--r-ctl);
+  background: color-mix(in srgb, var(--text) 6%, transparent);
+}
+
+.acl-seg-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 30px;
+  border-radius: 6px;
+  color: var(--text-2);
+  font-size: 13px;
+  transition: all var(--t-fast);
+}
+
+.acl-seg-btn:hover {
+  color: var(--text);
+}
+
+.acl-seg-btn.is-active {
+  background: var(--card-solid);
+  color: var(--accent-5);
+  font-weight: 600;
+  box-shadow: var(--shadow);
+}
+
+/* ===================== 任务迷你行 acl-task-mini ===================== */
+.acl-task-mini {
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-ctl);
+  cursor: pointer;
+  transition: border-color var(--t-fast), background-color var(--t-fast);
+}
+
+.acl-task-mini:hover {
+  border-color: color-mix(in srgb, var(--accent-5) 45%, transparent);
+  background: color-mix(in srgb, var(--accent-5) 5%, transparent);
+}
+
+.acl-task-mini__top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.acl-task-mini__name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.acl-task-mini__pct {
+  font-size: 12px;
+  color: var(--text-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.acl-task-mini__extra {
+  margin-top: 5px;
+  font-size: 11.5px;
+  color: var(--text-3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ===================== 实例行 acl-inst-row ===================== */
+.acl-inst-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-ctl);
+}
+
+.acl-inst-row + .acl-inst-row {
+  margin-top: 8px;
+}
+
+.acl-inst-row.is-current {
+  border-color: color-mix(in srgb, var(--accent-5) 55%, transparent);
+  background: color-mix(in srgb, var(--accent-5) 6%, transparent);
+}
+
+.acl-inst-row__icon {
+  color: var(--accent);
+  flex: none;
+}
+
+.acl-inst-row__mid {
+  flex: 1;
+  min-width: 0;
+}
+
+.acl-inst-row__name {
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.acl-inst-row__meta {
+  display: flex;
+  gap: 5px;
+  margin-top: 3px;
+}
+
+.acl-inst-row__actions {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex: none;
+}
+
+/* ===================== 日志行 acl-log-line ===================== */
+.acl-log-line {
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 12px;
+  line-height: 1.75;
+  color: var(--text-2);
+  word-break: break-all;
+  white-space: pre-wrap;
+  user-select: text;
+}
+
+.acl-log-time {
+  color: var(--text-3);
+}
+
+.acl-log-level {
+  color: var(--text-3);
+}
+
+.acl-log-line--warn .acl-log-level,
+.acl-log-line--warn .acl-log-text {
+  color: var(--warning);
+}
+
+.acl-log-line--error .acl-log-level,
+.acl-log-line--error .acl-log-text {
+  color: var(--danger);
+  font-weight: 600;
+}
+
+/* 系统状态行（游戏退出等） */
+.acl-log-line--sys {
+  font-weight: 600;
+}
+
+.acl-log-line--ok .acl-log-text { color: var(--success); }
+.acl-log-line--fail .acl-log-text { color: var(--danger); }
+
+.acl-log-line .acl-btn {
+  margin-left: 8px;
+}
+
+/* ===================== 登录弹窗 ===================== */
+.acl-login {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.acl-login-ms {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.acl-login-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.acl-login-step {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--text-2);
+  line-height: 1.6;
+}
+
+.acl-login-step__no {
+  flex: none;
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent-deep);
+  font-size: 11.5px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 设备代码大字展示（可点击复制） */
+.acl-login-code {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 14px;
+  border: 1px dashed var(--border);
+  border-radius: var(--r-ctl);
+  background: var(--bg-soft);
+}
+
+.acl-login-code__label {
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+.acl-login-code__text {
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 5px;
+  color: var(--accent-5);
+  cursor: pointer;
+  padding: 4px 14px;
+  border-radius: 6px;
+  transition: background-color var(--t-fast);
+  user-select: text;
+}
+
+.acl-login-code__text:hover {
+  background: var(--accent-soft);
+}
+
+/* 轮询等待动画 */
+.acl-login-waiting {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 6px 0;
+  color: var(--text-2);
+}
+
+.acl-login-elapsed {
+  font-size: 12px;
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.acl-login-waiting--ok {
+  color: var(--success);
+  font-weight: 600;
+}
+
+.acl-login-ok {
+  display: flex;
+  animation: aclToastIn 200ms ease;
+}
+
+/* ===================== 任务详情 ===================== */
+.acl-task-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.acl-task-detail__status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.acl-task-detail__error {
+  font-size: 12px;
+  color: var(--danger);
+  word-break: break-all;
+}
+
+.acl-task-detail__stats {
+  display: flex;
+  gap: 26px;
+}
+
+.acl-task-detail__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.acl-task-detail__label {
+  font-size: 11.5px;
+  color: var(--text-3);
+}
+
+.acl-task-detail__log-title {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+
+.acl-task-detail__logs {
+  max-height: 190px;
+  overflow-y: auto;
+  padding: 8px 10px;
+  border-radius: var(--r-ctl);
+  background: var(--code-bg);
+}
+
+/* ===================== 表单行（设置页） ===================== */
+.acl-form-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 0;
+}
+
+.acl-form-row + .acl-form-row {
+  border-top: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+}
+
+.acl-form-row__label {
+  flex: none;
+  width: 110px;
+  color: var(--text-2);
+}
+
+.acl-form-row__ctrl {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.acl-form-row__hint {
+  font-size: 11.5px;
+  color: var(--text-3);
+}
+
+/* 单选卡片（主题、下载源等） */
+.acl-radio-cards {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.acl-radio-card {
+  flex: 1;
+  min-width: 150px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-ctl);
+  cursor: pointer;
+  transition: all var(--t-fast);
+  background: transparent;
+  text-align: left;
+}
+
+.acl-radio-card:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.acl-radio-card.is-active {
+  border-color: var(--accent-5);
+  background: var(--accent-soft);
+  box-shadow: 0 0 0 1px var(--accent-5);
+}
+
+.acl-radio-card__icon {
+  flex: none;
+  color: var(--text-2);
+}
+
+.acl-radio-card.is-active .acl-radio-card__icon {
+  color: var(--accent-5);
+}
+
+.acl-radio-card__title {
+  font-weight: 600;
+}
+
+.acl-radio-card__desc {
+  font-size: 11.5px;
+  color: var(--text-3);
+  margin-top: 2px;
+}
+
+.acl-radio-card__check {
+  margin-left: auto;
+  color: var(--accent-5);
+  flex: none;
+}
+
+/* 主题色卡片 */
+.acl-color-cards {
+  display: flex;
+  gap: 10px;
+}
+
+.acl-color-card {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-ctl);
+  cursor: pointer;
+  transition: all var(--t-fast);
+  background: transparent;
+  text-align: left;
+}
+
+.acl-color-card:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.acl-color-card.is-active {
+  border-color: var(--accent-5);
+  box-shadow: 0 0 0 1px var(--accent-5);
+}
+
+.acl-color-card__swatch {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.acl-color-card__check {
+  margin-left: auto;
+  color: var(--accent-5);
+  flex: none;
+}
+
+/* Java 单选列表 */
+.acl-radio-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 10px;
+  border: 1px solid transparent;
+  border-radius: var(--r-ctl);
+  cursor: pointer;
+  transition: background-color var(--t-fast), border-color var(--t-fast);
+}
+
+.acl-radio-row:hover {
+  background: color-mix(in srgb, var(--text) 4%, transparent);
+}
+
+.acl-radio-row.is-active {
+  border-color: color-mix(in srgb, var(--accent-5) 45%, transparent);
+  background: var(--accent-soft);
+}
+
+.acl-radio-row input[type="radio"] {
+  accent-color: var(--accent-5);
+  flex: none;
+}
+
+.acl-radio-row__main {
+  flex: 1;
+  min-width: 0;
+}
+
+.acl-radio-row__title {
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.acl-radio-row__sub {
+  font-size: 11.5px;
+  color: var(--text-3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 设置分区小标题 */
+.acl-section-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 600;
+  font-size: 13.5px;
+  margin: 4px 0 2px;
+}
+
+.acl-section-title .acl-ico {
+  color: var(--accent);
+}
+
+/* 灰态 P1 行 */
+.acl-p1-row {
+  opacity: 0.6;
+}

@@ -1,0 +1,153 @@
+/**
+ * @fileoverview 设置页样式（docs/UI-SPEC.md §5.3）
+ *
+ * 左侧子导航（通用/启动/账户/下载/更多）+ 右侧表单卡片。
+ * 本文件只承载设置页特有布局（分组容器、账户卡片、内存滑块行、高级参数等），
+ * 表单控件复用 components.css 的 acl-* 组件。
+ */
+
+/* ===================== 分组容器 ===================== */
+.acl-set-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.acl-set-card {
+  max-width: 720px;
+}
+
+.acl-set-card__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 14.5px;
+  margin-bottom: 4px;
+}
+
+.acl-set-card__title .acl-ico {
+  color: var(--accent);
+}
+
+/* ===================== 实例管理卡 ===================== */
+.acl-set-instance-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.acl-set-instance-list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===================== Java 卡 ===================== */
+.acl-set-java-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin: 6px 0 10px;
+  max-height: 260px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--r-ctl);
+  padding: 5px;
+}
+
+.acl-set-java-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* ===================== 内存卡 ===================== */
+.acl-set-mem-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.acl-set-mem-sliders {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.acl-set-mem-row__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  font-size: 12.5px;
+  color: var(--text-2);
+}
+
+.acl-set-mem-row__val {
+  font-weight: 600;
+  color: var(--accent-deep);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ===================== 账户卡 ===================== */
+.acl-set-account {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.acl-set-account__mid {
+  flex: 1;
+  min-width: 0;
+}
+
+.acl-set-account__name {
+  font-weight: 600;
+  font-size: 14.5px;
+}
+
+.acl-set-account__meta {
+  font-size: 12px;
+  color: var(--text-3);
+  margin-top: 3px;
+  word-break: break-all;
+}
+
+.acl-set-account__actions {
+  flex: none;
+}
+
+/* ===================== 更多行内控件 ===================== */
+.acl-set-desc {
+  font-size: 12px;
+  color: var(--text-3);
+  line-height: 1.6;
+  margin-top: 2px;
+}
+
+/* 并发线程行 */
+.acl-set-thread-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.acl-set-thread-row .acl-slider {
+  flex: 1;
+}
+
+.acl-set-thread-row__val {
+  flex: none;
+  width: 34px;
+  text-align: right;
+  font-weight: 600;
+  color: var(--accent-deep);
+  font-variant-numeric: tabular-nums;
+}
+
+/* JVM 参数文本框 */
+.acl-set-jvm textarea {
+  margin-top: 6px;
+}

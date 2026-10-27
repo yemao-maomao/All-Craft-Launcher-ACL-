@@ -1,0 +1,139 @@
+/**
+ * @fileoverview 关于页样式（docs/UI-SPEC.md §5.3「更多」）
+ *
+ * 居中单列布局：大 Logo + 名称/版本 + 简介 + 运行时信息表 +
+ * 开源协议 / 灵感致谢 / 项目仓库卡片 + 免责声明。
+ */
+
+.acl-about {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.acl-about__hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 22px 20px 18px;
+}
+
+.acl-about__logo {
+  color: var(--accent);
+}
+
+.acl-about__name {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.acl-about__version {
+  font-size: 12.5px;
+  color: var(--text-3);
+}
+
+.acl-about__intro {
+  font-size: 13px;
+  color: var(--text-2);
+  text-align: center;
+  max-width: 420px;
+  line-height: 1.7;
+}
+
+/* 运行时信息表 */
+.acl-about-table {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--r-ctl);
+  overflow: hidden;
+}
+
+.acl-about-table__row {
+  display: flex;
+  padding: 8px 13px;
+  font-size: 12.5px;
+}
+
+.acl-about-table__row + .acl-about-table__row {
+  border-top: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+}
+
+.acl-about-table__k {
+  flex: none;
+  width: 96px;
+  color: var(--text-3);
+}
+
+.acl-about-table__v {
+  flex: 1;
+  min-width: 0;
+  word-break: break-all;
+  text-align: right;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 链接卡片行 */
+.acl-about-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.acl-about-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-ctl);
+  cursor: pointer;
+  transition: all var(--t-fast);
+  background: transparent;
+  text-align: left;
+  color: var(--text);
+}
+
+.acl-about-link:hover {
+  border-color: var(--accent-5);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.acl-about-link__icon {
+  flex: none;
+  color: var(--accent);
+}
+
+.acl-about-link__mid {
+  flex: 1;
+  min-width: 0;
+}
+
+.acl-about-link__name {
+  font-weight: 500;
+}
+
+.acl-about-link__desc {
+  font-size: 11.5px;
+  color: var(--text-3);
+  margin-top: 2px;
+}
+
+.acl-about-link__arrow {
+  flex: none;
+  color: var(--text-3);
+}
+
+/* 免责声明 */
+.acl-about__disclaimer {
+  font-size: 11.5px;
+  color: var(--text-3);
+  text-align: center;
+  line-height: 1.7;
+  padding: 0 18px;
+}

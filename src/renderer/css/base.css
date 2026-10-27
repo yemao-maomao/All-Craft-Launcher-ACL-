@@ -1,0 +1,226 @@
+/**
+ * @fileoverview 基础样式：reset、设计令牌（CSS 变量）、双主题、字体、滚动条、工具类
+ *
+ * 设计令牌按 docs/UI-SPEC.md §4：
+ *  - 主题色预设：星空蓝 #3D7BFD / 熔岩橙 #F5822C / 草叶绿 #2FA66B，各派生 8 级
+ *    --accent-1（最深）… --accent-5（主色）… --accent-8（最浅）；
+ *  - 浅色主题为默认（半透明白卡片 + 微投影），深色为差异化卖点；
+ *  - 主题经 html[data-theme] 与 html[data-accent] 切换，200ms 过渡无闪白。
+ */
+
+/* ===================== Reset ===================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden; /* 应用外壳不滚动，滚动区域由 .acl-scroll 承担 */
+}
+
+body {
+  font-family: "Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text);
+  /* 页面底色 + 顶部主题色 4% 光晕的径向渐变（原创背景方案） */
+  background:
+    radial-gradient(1100px 460px at 50% -8%, color-mix(in srgb, var(--accent-5) 5%, transparent), transparent 70%),
+    var(--bg);
+  -webkit-font-smoothing: antialiased;
+  user-select: none; /* 桌面应用质感：默认不可选中，日志/输入框单独放开 */
+}
+
+img,
+svg {
+  display: block;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: var(--accent-5);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent-5) 30%, transparent);
+}
+
+/* ===================== 主题令牌：浅色（默认） ===================== */
+html[data-theme="light"] {
+  --bg: #E9EDF4;                       /* 页面背景 */
+  --bg-soft: #F3F6FB;                  /* 次级背景（输入框底等） */
+  --card: rgba(255, 255, 255, 0.86);   /* 半透明白卡片 */
+  --card-solid: #FFFFFF;               /* 不透明卡片底（弹窗等） */
+  --border: #D9E0EA;                   /* 边框 */
+  --text: #2A3342;                     /* 主文字 */
+  --text-2: #6B7787;                   /* 次级文字 */
+  --text-3: #98A3B3;                   /* 弱文字/占位 */
+  --danger: #D64545;
+  --warning: #E8A33D;
+  --success: #2FA66B;
+  --shadow: 0 2px 8px rgba(30, 41, 59, 0.08);
+  --shadow-hover: 0 6px 18px rgba(30, 41, 59, 0.14);
+  --mask: rgba(0, 0, 0, 0.4);
+  --code-bg: #F4F7FB;                  /* 代码/日志底 */
+  --titlebar-bg: rgba(255, 255, 255, 0.72);
+}
+
+/* ===================== 主题令牌：深色（差异化卖点） ===================== */
+html[data-theme="dark"] {
+  --bg: #141A24;
+  --bg-soft: #1B2230;
+  --card: rgba(30, 38, 52, 0.86);
+  --card-solid: #222B3A;
+  --border: #2C3648;
+  --text: #E8EDF5;
+  --text-2: #97A3B4;
+  --text-3: #5D6B7E;
+  --danger: #FF6B6B;
+  --warning: #FFC94D;
+  --success: #4CD97B;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  --shadow-hover: 0 6px 18px rgba(0, 0, 0, 0.5);
+  --mask: rgba(0, 0, 0, 0.55);
+  --code-bg: rgba(0, 0, 0, 0.25);
+  --titlebar-bg: rgba(20, 26, 36, 0.8);
+}
+
+/* ===================== 主题色预设：星空蓝（默认） ===================== */
+html[data-accent="blue"] {
+  --accent-1: #1B4FC8; /* 最深：按压态/深色文字 */
+  --accent-2: #245ADB;
+  --accent-3: #2E68F0;
+  --accent-4: #5C8FFE; /* 渐变亮端 */
+  --accent-5: #3D7BFD; /* 主色 */
+  --accent-6: #7BA5FE;
+  --accent-7: #A9C4FF;
+  --accent-8: #E8F0FF; /* 最浅：柔和背景 */
+}
+
+/* ===================== 主题色预设：熔岩橙 ===================== */
+html[data-accent="orange"] {
+  --accent-1: #C25A10;
+  --accent-2: #D96A14;
+  --accent-3: #E8781A;
+  --accent-4: #F79A57;
+  --accent-5: #F5822C;
+  --accent-6: #F9AD75;
+  --accent-7: #FCC9A3;
+  --accent-8: #FFF1E4;
+}
+
+/* ===================== 主题色预设：草叶绿 ===================== */
+html[data-accent="green"] {
+  --accent-1: #1E7A4B;
+  --accent-2: #258D57;
+  --accent-3: #2B9B62;
+  --accent-4: #4CBF8A;
+  --accent-5: #2FA66B;
+  --accent-6: #6CCFA0;
+  --accent-7: #A2E2C4;
+  --accent-8: #E5F7EE;
+}
+
+/* 语义别名（组件统一引用这些） */
+:root {
+  --accent: var(--accent-5);           /* 主题主色 */
+  --accent-hover: var(--accent-4);     /* 悬浮态 */
+  --accent-pressed: var(--accent-2);   /* 按压态 */
+  --accent-soft: var(--accent-8);      /* 主题色浅底 */
+  --accent-deep: var(--accent-1);      /* 主题色深色（文字/描边） */
+
+  /* 远古版本方块色（类型识别色，非主题令牌） */
+  --ver-old: #A9744F;
+
+  /* 圆角规范 */
+  --r-card: 10px;
+  --r-ctl: 7px;
+  --r-btn-lg: 12px;
+  --r-pill: 999px;
+
+  /* 动效 */
+  --t-fast: 150ms ease;
+  --t-mid: 200ms ease;
+  --t-slow: 250ms ease;
+  --spin: 0.8s linear infinite;
+}
+
+/* 主题切换瞬间给全局加 200ms 过渡，避免颜色突变（由 app.js 挂/摘 .theme-fading） */
+html.theme-fading,
+html.theme-fading *,
+html.theme-fading *::before,
+html.theme-fading *::after {
+  transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease,
+    box-shadow 200ms ease, fill 200ms ease, stroke 200ms ease !important;
+}
+
+/* ===================== 滚动条 ===================== */
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--text-3) 55%, transparent);
+  border-radius: var(--r-pill);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--text-2) 70%, transparent);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+/* ===================== 工具类 ===================== */
+.is-hidden {
+  display: none !important;
+}
+
+.acl-text-2 {
+  color: var(--text-2);
+}
+
+.acl-text-3 {
+  color: var(--text-3);
+}
+
+/* 允许选中的区域（日志、代码、输入框） */
+.acl-selectable,
+input,
+textarea {
+  user-select: text;
+}
+
+/* 焦点可见性（键盘导航友好） */
+:focus-visible {
+  outline: 2px solid var(--accent-6);
+  outline-offset: 1px;
+}
