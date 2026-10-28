@@ -7,10 +7,10 @@
   "main": "src/main/main.js",
   "author": "ACL Team",
   "license": "GPL-3.0-only",
-  "homepage": "https://github.com/AllCraftLauncher/AllCraftLauncher",
+  "homepage": "https://github.com/yemao-maomao/All-Craft-Launcher-ACL-",
   "repository": {
     "type": "git",
-    "url": "https://github.com/AllCraftLauncher/AllCraftLauncher.git"
+    "url": "https://github.com/yemao-maomao/All-Craft-Launcher-ACL-.git"
   },
   "engines": {
     "node": ">=20"

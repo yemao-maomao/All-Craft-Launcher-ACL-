@@ -25,7 +25,7 @@
 
 ## 📥 下载
 
-前往 [Releases](https://github.com/AllCraftLauncher/AllCraftLauncher/releases) 页面下载最新版本：
+前往 [Releases](https://github.com/yemao-maomao/All-Craft-Launcher-ACL-/releases) 页面下载最新版本：
 
 - `AllCraftLauncher-x.x.x-portable.exe`：免安装单文件绿色版
 - `AllCraftLauncher-x.x.x-setup.exe`：安装向导版

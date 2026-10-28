@@ -80,9 +80,9 @@ export function render(container) {
         el('div', { class: 'acl-set-card__title', html: `${icon('external', 15)}<span>${tr('aboutRepo')}</span>` }),
         el('div', { class: 'acl-about-links' },
           linkRow({
-            name: 'AllCraftLauncher / AllCraftLauncher',
-            desc: 'https://github.com/AllCraftLauncher/AllCraftLauncher',
-            url: 'https://github.com/AllCraftLauncher/AllCraftLauncher',
+            name: 'yemao-maomao / All-Craft-Launcher-ACL-',
+            desc: 'https://github.com/yemao-maomao/All-Craft-Launcher-ACL-',
+            url: 'https://github.com/yemao-maomao/All-Craft-Launcher-ACL-',
           }),
         ),
       ),
