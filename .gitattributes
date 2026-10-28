@@ -1,0 +1,19 @@
+# 统一换行符与二进制文件声明
+# 背景：部分开发机全局设置了 core.autocrlf=true，若不显式声明二进制类型，
+# 图标/截图等二进制文件可能被当作文本做 CRLF 转换而损坏。
+# 规则：
+#   - 文本文件统一 text=auto（入库 LF，检出按平台）
+#   - 二进制类型显式标记 binary，git 不做任何换行转换
+
+* text=auto
+
+# 二进制资源（图标/截图/打包产物）
+*.png binary
+*.ico binary
+*.jpg binary
+*.gif binary
+*.exe binary
+*.jar binary
+*.zip binary
+*.7z binary
+*.dll binary
